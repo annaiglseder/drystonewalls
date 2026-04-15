@@ -1,0 +1,26 @@
+model:
+  name: Unet++                  # Unet++ / DeepLabV3Plus / Segformer
+  encoder: efficientnet-b7      # efficientnet-b3
+  weights: imagenet             # imagenet / null
+  channels: 1
+  classes: 1
+
+training:
+  optimizer:
+    type: adam
+    lr: 0.0001
+  scheduler:                    #currently only MultiStepLr is supported: https://pytorch.org/docs/stable/generated/torch.optim.lr_scheduler.MultiStepLR.html
+    steps: [50]                 #after 15 and 25 epochs the current learning rate will be multiplied by factor
+    factor: 0.1
+  loss: dice                    # dice / focal
+  epochs: 30
+  batch_size: 32
+
+data:
+  train:
+    - ...\dtm_full\train 
+  valid: 
+    - ...\dtm_full\valid
+  test: 
+    - ...\dtm_full\test
+  out: ...\runs\250808_unetpp_enet_b7_dtm_full
